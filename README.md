@@ -43,7 +43,7 @@ src
 │           │   └── pagination
 │           │       ├── PageRequest.kt
 │           │       └── PagingUtil.kt
-│           └── support
+│           └── helper
 │               └── converter
 │                   ├── StringToEnumConverter.kt
 │                   └── StringToLocalDateTimeConverter.kt
