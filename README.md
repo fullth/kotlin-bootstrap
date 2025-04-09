@@ -17,3 +17,40 @@
 
 ## 고려할 점
 * 어노테이션등으로 기능을 제공하는 경우 코드 전반적으로 의존적인 코드가 분포되지 않도록 설계
+
+## 패키지 구조
+* 예시(by. Claude)
+```
+src
+├── main
+│   └── kotlin
+│       └── com.fullth.kotlin_bootstrap
+│           ├── KotlinBootstrapApplication.kt
+│           ├── common
+│           │   ├── config
+│           │   │   └── WebMvcConfig.kt
+│           │   └── response
+│           │       ├── ApiResponse.kt
+│           │       └── ResponseEntityBuilder.kt
+│           ├── core
+│           │   ├── error
+│           │   │   ├── GlobalExceptionHandler.kt
+│           │   │   └── exception
+│           │   │       └── BusinessException.kt
+│           │   ├── filter
+│           │   ├── FilterConfig.kt
+│           │   │   └── RequestLoggingFilter.kt
+│           │   └── pagination
+│           │       ├── PageRequest.kt
+│           │       └── PagingUtil.kt
+│           └── support
+│               └── converter
+│                   ├── StringToEnumConverter.kt
+│                   └── StringToLocalDateTimeConverter.kt
+```
+* common
+  * 해당 프로젝트의 구현에 필요한 공통된 처리를 관리합니다
+* core
+  * 주요 구현 사항의 처리를 관리합니다
+* helper
+  * 기타 보조적인 기능을 관리합니다
