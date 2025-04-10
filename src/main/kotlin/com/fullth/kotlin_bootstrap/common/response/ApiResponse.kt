@@ -86,7 +86,7 @@ sealed class ApiResponse<out T> {
                 Page<T>(
                     data = page.content,
                     context =
-                        Context(
+                        Context.onlyPage(
                             page =
                                 Context.Page<Any?>(
                                     pageNumber = page.number,
@@ -106,7 +106,7 @@ sealed class ApiResponse<out T> {
                 Page(
                     data = content,
                     context =
-                        Context(
+                        Context.onlyPage(
                             page =
                                 Context.Page(
                                     pageNumber = pageNumber,
@@ -120,8 +120,9 @@ sealed class ApiResponse<out T> {
     }
 }
 
-data class Context(
-    val page: Page<Any?>? = null,
+data class Context private constructor(
+    val page: Page<Any?>?,
+    val meta: Map<String, Any>,
 ) {
     data class Page<T>(
         val pageNumber: Int,
@@ -129,4 +130,23 @@ data class Context(
         val size: Long,
         val total: Long,
     )
+
+    companion object {
+        fun onlyPage(page: Page<Any?>) =
+            Context(
+                page = page,
+                meta = emptyMap(),
+            )
+
+        fun onlyMeta(meta: Map<String, Any>) =
+            Context(
+                page = null,
+                meta = meta,
+            )
+
+        fun of(
+            page: Page<Any?>,
+            meta: Map<String, Any>,
+        ) = Context(page, meta)
+    }
 }
