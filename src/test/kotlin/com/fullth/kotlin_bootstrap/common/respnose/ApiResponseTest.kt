@@ -4,6 +4,7 @@ import com.fullth.kotlin_bootstrap.common.response.ApiResponse
 import com.fullth.kotlin_bootstrap.common.response.Context
 import com.fullth.kotlin_bootstrap.utils.Print
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.InstanceOfAssertFactories
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -50,11 +51,18 @@ class ApiResponseTest {
 
             // then
             println(Print().pretty(context))
-            assertThat(context.meta)
-                .containsEntry("version", "1.0.0")
-                .containsEntry("isMobile", true)
-                .containsEntry("deviceId", "device123")
-                .containsEntry("userAgent", "Mozilla/5.0")
+            assertThat(context)
+                .isInstanceOf(Context.Context.MetaContext::class.java)
+                .extracting("meta")
+                .asInstanceOf(InstanceOfAssertFactories.MAP)
+                .containsAllEntriesOf(
+                    mapOf(
+                        "version" to "1.0.0",
+                        "isMobile" to true,
+                        "deviceId" to "device123",
+                        "userAgent" to "Mozilla/5.0",
+                    ),
+                )
         }
 
         @Test
@@ -73,8 +81,10 @@ class ApiResponseTest {
 
             // then
             println(Print().pretty(context))
-            assertThat(context.page).isEqualTo(page)
-            assertThat(context.meta).isEmpty()
+            assertThat(context)
+                .isInstanceOf(Context.Context.PageContext::class.java)
+                .extracting("page")
+                .isEqualTo(page)
         }
 
         @Test
@@ -98,13 +108,10 @@ class ApiResponseTest {
 
             // then
             println(Print().pretty(context))
-            assertThat(context.page)
-                .isNotNull
-                .extracting("pageNumber", "offset", "size", "total")
-                .containsExactly(0, 0L, 10L, 100L)
-            assertThat(context.meta)
-                .containsEntry("version", "1.0.0")
-                .containsEntry("isMobile", true)
+            assertThat(context)
+                .isInstanceOf(Context.Context.FullContext::class.java)
+                .extracting("page", "meta")
+                .containsExactly(page, meta)
         }
     }
 }

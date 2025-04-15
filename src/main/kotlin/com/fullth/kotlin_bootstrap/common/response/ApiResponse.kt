@@ -79,7 +79,7 @@ sealed class ApiResponse<out T> {
      */
     data class Page<T>(
         val data: List<T>,
-        val context: Context,
+        val context: Context.Context,
     ) : ApiResponse<List<T>>() {
         companion object {
             fun <T> from(page: org.springframework.data.domain.Page<T>): Page<T> =
@@ -122,7 +122,7 @@ sealed class ApiResponse<out T> {
 
 data class Context private constructor(
     val page: Page<Any?>?,
-    val meta: Map<String, Any>,
+    val meta: Map<String, Any>?,
 ) {
     data class Page<T>(
         val pageNumber: Int,
@@ -131,22 +131,30 @@ data class Context private constructor(
         val total: Long,
     )
 
-    companion object {
-        fun onlyPage(page: Page<Any?>) =
-            Context(
-                page = page,
-                meta = emptyMap(),
-            )
+    // TODO: 구조는 이게 적합한 것으로 도출. Context.Context 너무 구림.
+    sealed class Context {
+        data class PageContext(
+            val page: Page<Any?>,
+        ) : Context()
 
-        fun onlyMeta(meta: Map<String, Any>) =
-            Context(
-                page = null,
-                meta = meta,
-            )
+        data class MetaContext(
+            val meta: Map<String, Any>,
+        ) : Context()
+
+        data class FullContext(
+            val page: Page<Any?>,
+            val meta: Map<String, Any>,
+        ) : Context()
+    }
+
+    companion object {
+        fun onlyPage(page: Page<Any?>): Context = Context.PageContext(page)
+
+        fun onlyMeta(meta: Map<String, Any>): Context = Context.MetaContext(meta)
 
         fun of(
             page: Page<Any?>,
             meta: Map<String, Any>,
-        ) = Context(page, meta)
+        ): Context = Context.FullContext(page, meta)
     }
 }
