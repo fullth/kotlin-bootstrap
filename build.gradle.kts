@@ -3,6 +3,18 @@ plugins {
     kotlin("plugin.spring") version "1.9.25"
     id("org.springframework.boot") version "3.4.4"
     id("io.spring.dependency-management") version "1.1.7"
+    id("maven-publish")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+            groupId = "com.fullth"
+            artifactId = "kotlin-bootstrap"
+            version = "0.0.1-SNAPSHOT"
+        }
+    }
 }
 
 group = "com.fullth"
