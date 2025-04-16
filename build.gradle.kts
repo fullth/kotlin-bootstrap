@@ -7,6 +7,10 @@ plugins {
     id("jacoco")
 }
 
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+
 tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
     enabled = false
 }
@@ -64,6 +68,7 @@ tasks.withType<Test> {
 }
 
 tasks.jacocoTestReport {
+    dependsOn(tasks.test)
     reports {
         xml.required.set(true)
         csv.required.set(false)
@@ -86,8 +91,6 @@ tasks.jacocoTestReport {
             },
         ),
     )
-
-    dependsOn(tasks.test)
 }
 
 // 테스트 커버리지 최소 기준 설정 TODO: 상세 옵션 추가 조사
