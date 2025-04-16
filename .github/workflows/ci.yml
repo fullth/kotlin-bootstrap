@@ -56,4 +56,4 @@ jobs:
         if: always()
         with:
           files: build/test-results/**/*.xml
-          github_token: ${{ secrets.TOKEN }}
+          github_token: ${{ github.token }}
