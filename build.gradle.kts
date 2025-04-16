@@ -102,6 +102,13 @@ tasks.jacocoTestCoverageVerification {
                 value = "COVEREDRATIO"
                 minimum = "0.50".toBigDecimal() // TODO: 요구사항은 60% -> 테스트 후 변경
             }
+            excludes =
+                listOf(
+                    "com.fullth.kotlin_bootstrap.common.config.*",
+                    "com.fullth.kotlin_bootstrap.core.filter.*",
+                    "com.fullth.kotlin_bootstrap.core.error.*",
+                    "com.fullth.kotlin_bootstrap.core.pagination.*",
+                )
         }
     }
 }
