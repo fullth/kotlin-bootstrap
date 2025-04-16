@@ -1,7 +1,5 @@
-package com.fullth.kotlin_bootstrap.common.respnose
+package com.fullth.kotlin_bootstrap.common.response
 
-import com.fullth.kotlin_bootstrap.common.response.ApiResponse
-import com.fullth.kotlin_bootstrap.common.response.Context
 import com.fullth.kotlin_bootstrap.utils.Print
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.InstanceOfAssertFactories
